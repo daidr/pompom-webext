@@ -1,0 +1,15 @@
+html,
+body,
+#app {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+  outline: none;
+  font-family: -apple-system, BlinkMacSystemFont, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  @apply antialiased;
+}

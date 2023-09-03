@@ -1,0 +1,561 @@
+<script setup lang="ts">
+import { sendMessage } from 'webext-bridge'
+import { i18n } from 'webextension-polyfill'
+import type { ISettingsMap, IUserDataItem } from '~/types'
+
+const ServerSelectEl = ref()
+const ServerSelectValue = ref('0')
+
+const refreshText = ref('')
+
+const activeNavItem = ref(0)
+
+const manifestData = ref({}) as any
+
+fetch('/manifest.json')
+  .then((response) => response.json())
+  .then((data) => {
+    manifestData.value = data
+  })
+
+const roleList = ref([] as IUserDataItem[])
+
+watch(activeNavItem, (newValue) => {
+  if (newValue === 1) {
+    // 当切换到 角色列表&设置 时，尝试获取角色列表
+    sendMessage('get_role_list', {}).then((data) => {
+      roleList.value = data as unknown as IUserDataItem[]
+    })
+  }
+  else if (newValue === 3) {
+    // 当切换到 提醒 时，尝试获取角色列表 和 通知设定
+    sendMessage('get_role_list', {}).then((data) => {
+      roleList.value = data as unknown as IUserDataItem[]
+    })
+  }
+})
+
+const isFetching = ref(false)
+
+const onCookieReadBtnClick = () => {
+  isFetching.value = true
+  sendMessage<number, 'request_cookie_read'>('request_cookie_read', {
+    oversea: ServerSelectValue.value === '1',
+  }).then((data) => {
+    isFetching.value = false
+    refreshText.value = ''
+    if (data > 0) {
+      // 用户凭据获取成功
+      refreshText.value = i18n.getMessage('options_FetchBtnAlert_2', [
+        data.toString(),
+      ])
+    }
+    else if (data === 0) {
+      // 用户凭据没有角色
+      refreshText.value = i18n.getMessage('options_FetchBtnAlert_3')
+    }
+    else {
+      // 用户凭据获取失败
+      refreshText.value = i18n.getMessage('options_FetchBtnAlert_1')
+    }
+    setTimeout(() => {
+      refreshText.value = ''
+    }, 2000)
+  })
+}
+
+const onDeleteRoleBtnClick = (roleUid: string) => {
+  sendMessage('delete_role_request', {
+    uid: roleUid,
+  }).then(() => {
+    sendMessage('get_role_list', {}).then((data) => {
+      roleList.value = data as unknown as IUserDataItem[]
+    })
+  })
+}
+
+const onRoleCheckboxChange = (roleUid: string, e: any) => {
+  sendMessage('set_role_status', {
+    uid: roleUid,
+    status: e.target.checked,
+  })
+}
+
+const settingsMap: ISettingsMap = reactive({
+  refreshInterval: -1,
+  badgeVisibility: true,
+})
+
+const getSettingsMap = async () => {
+  const result = await sendMessage('read_settings', {})
+  settingsMap.refreshInterval = result.refreshInterval
+  settingsMap.badgeVisibility = result.badgeVisibility
+}
+
+watch(settingsMap, (newValue) => {
+  const _refreshInterval = Math.floor(newValue.refreshInterval)
+  if (_refreshInterval < 3)
+    settingsMap.refreshInterval = 3
+  else if (_refreshInterval > 60)
+    settingsMap.refreshInterval = 60
+})
+
+getSettingsMap()
+
+const setSettingsMap = async () => {
+  console.log(settingsMap.badgeVisibility)
+  await sendMessage('write_settings', {
+    refreshInterval: settingsMap.refreshInterval,
+    badgeVisibility: settingsMap.badgeVisibility,
+  })
+  getSettingsMap()
+}
+</script>
+
+<template>
+  <main class="px-4 py-5" :lang="i18n.getUILanguage()">
+    <nav>
+      <div :class="{ active: activeNavItem === 0 }" @click="activeNavItem = 0">
+        <uil:user-plus />
+        <span>{{ i18n.getMessage("options_Nav_AddNewRole") }}</span>
+      </div>
+      <div :class="{ active: activeNavItem === 1 }" @click="activeNavItem = 1">
+        <uil:list-ul />
+        <span>{{ i18n.getMessage("options_Nav_RoleListSetting") }}</span>
+      </div>
+      <div :class="{ active: activeNavItem === 4 }" @click="activeNavItem = 4">
+        <uil:setting />
+        <span>{{ i18n.getMessage("options_Nav_Setting") }}</span>
+      </div>
+      <div :class="{ active: activeNavItem === 2 }" @click="activeNavItem = 2">
+        <uil:info-circle />
+        <span>{{ i18n.getMessage("options_Nav_About") }}</span>
+      </div>
+    </nav>
+    <template v-if="activeNavItem === 0">
+      <div class="setting-panel add-panel">
+        <h1>{{ i18n.getMessage("options_SelectServer") }}</h1>
+        <div class="config-item">
+          <select ref="ServerSelectEl" v-model="ServerSelectValue">
+            <option value="0">
+              {{ i18n.getMessage("options_ServerCN") }}
+            </option>
+            <option value="1">
+              {{ i18n.getMessage("options_ServerOS") }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="divider my-4" />
+      <div class="cookie-refresh-panel">
+        <h1>{{ i18n.getMessage("options_FetchUserCookie") }}</h1>
+        <p class="tips" v-html="i18n.getMessage('options_Tips_1')" />
+        <p class="tips" v-html="i18n.getMessage('options_Tips_2')" />
+        <p
+          class="tips" v-html="ServerSelectValue === '0'
+            ? i18n.getMessage('options_Tips_3')
+            : i18n.getMessage('options_Tips_4')
+          "
+        />
+        <div class="btn" :class="{ 'is-fetching': isFetching }" @click="onCookieReadBtnClick">
+          {{
+            refreshText === ""
+              ? i18n.getMessage("options_FetchBtnTitle")
+              : refreshText
+          }}
+        </div>
+      </div>
+    </template>
+    <template v-else-if="activeNavItem === 1">
+      <div class="setting-panel role-panel">
+        <template v-if="!roleList || roleList.length === 0">
+          <div class="role-not-found">
+            {{ i18n.getMessage("options_Role_NoRoleFound") }}
+          </div>
+        </template>
+        <template v-else>
+          <div class="role-list">
+            <table class="role-table">
+              <thead>
+                <tr>
+                  <th>{{ i18n.getMessage("options_Role_IsEnabledTitle") }}</th>
+                  <th>{{ i18n.getMessage("options_Role_RoleNameTitle") }}</th>
+                  <th>{{ i18n.getMessage("options_Role_RoleServerTitle") }}</th>
+                  <th>{{ i18n.getMessage("options_Role_RoleActionTitle") }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(role, index) in roleList" :key="role.uid">
+                  <td>
+                    <input
+                      :id="`role-checkbox-${index}`" type="checkbox" :checked="role.isEnabled"
+                      @change="onRoleCheckboxChange(role.uid, $event)"
+                    >
+                    <label :for="`role-checkbox-${index}`" />
+                  </td>
+                  <td>{{ role.nickname }}({{ role.uid }})</td>
+                  <td>{{ i18n.getMessage(role.serverRegion) }}</td>
+                  <td>
+                    <div class="delete-role-btn" @click="onDeleteRoleBtnClick(role.uid)">
+                      <uil:multiply />
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </template>
+      </div>
+    </template>
+    <template v-else-if="activeNavItem === 4">
+      <div class="setting-panel settings-panel">
+        <div v-if="settingsMap.refreshInterval !== -1" class="settings-list">
+          <div class="settings-item">
+            <div class="top">
+              <div class="key">
+                {{ i18n.getMessage("options_Setting_Item_Badge") }}
+              </div>
+              <div class="value">
+                <input v-model="settingsMap.badgeVisibility" type="checkbox" :true-value="true" :false-value="false">
+              </div>
+            </div>
+          </div>
+          <div class="settings-item">
+            <div class="top">
+              <div class="key">
+                {{ i18n.getMessage("options_Setting_Item_DataRefreshInterval") }}
+              </div>
+              <div class="value">
+                <input v-model="settingsMap.refreshInterval" type="number">
+                {{ i18n.getMessage("options_Setting_Item_DataRefreshInterval_Unit") }}
+              </div>
+            </div>
+            <div class="desc">
+              {{ i18n.getMessage("options_Setting_Item_DataRefreshInterval_Protips_1") }}
+              <br>
+              {{ i18n.getMessage("options_Setting_Item_DataRefreshInterval_Protips_2") }}
+            </div>
+          </div>
+        </div>
+        <div class="apply-btn btn" @click="setSettingsMap">
+          {{ i18n.getMessage("options_Setting_Apply") }}
+        </div>
+      </div>
+    </template>
+    <template v-else-if="activeNavItem === 2">
+      <div class="setting-panel about-panel">
+        <table class="about-table">
+          <tbody>
+            <tr>
+              <td class="key">
+                <div>
+                  {{ i18n.getMessage("options_About_VersionTitle") }}
+                </div>
+              </td>
+              <td class="value" v-html="manifestData.version" />
+            </tr>
+            <tr>
+              <td class="key">
+                <div>
+                  {{ i18n.getMessage("options_About_AuthorTitle") }}
+                </div>
+              </td>
+              <td class="value" v-html="i18n.getMessage('options_About_Author')" />
+            </tr>
+            <tr>
+              <td class="key">
+                <div>
+                  {{ i18n.getMessage("options_About_DonateTitle") }}
+                </div>
+              </td>
+              <td class="value">
+                <a class="reverse" href="https://patreon.com/daidr" target="_blank" rel="noopener noreferrer">Patreon</a>
+                <br>
+                <a class="reverse" href="https://afdian.net/a/daidr" target="_blank" rel="noopener noreferrer">爱发电</a>
+                <br>
+                <a class="reverse" href="https://sponsor.daidr.me" target="_blank" rel="noopener noreferrer">Sponsor
+                  list</a>
+              </td>
+            </tr>
+            <tr>
+              <td class="key">
+                <div>
+                  {{ i18n.getMessage("options_About_OpenSourceTitle") }}
+                </div>
+              </td>
+              <td class="value" v-html="i18n.getMessage('options_About_OpenSource')" />
+            </tr>
+            <tr>
+              <td class="key">
+                <div>
+                  {{ i18n.getMessage("options_About_ThankTitle") }}
+                </div>
+              </td>
+              <td class="value" v-html="i18n.getMessage('options_About_Thank')" />
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </template>
+  </main>
+</template>
+
+<style lang="scss">
+a {
+  @apply transition;
+  @apply text-primary-light;
+  @apply border-dashed border-b-1 border-primary-light/80;
+
+  &:hover {
+    @apply opacity-80;
+  }
+
+  &.reverse {
+    @apply border-dashed border-b-1 border-primary-dark text-primary-dark;
+  }
+}
+
+input[type="number"] {
+  &::selection {
+    background: #e5dbc7;
+    color: #141d2e;
+  }
+
+  @apply bg-transparent;
+  @apply text-[#e5dbc7] w-12 border-b-1 border-[#e5dbc7];
+}
+
+::selection {
+  @apply text-primary-light bg-primary-dark;
+}
+</style>
+
+<style lang="scss" scoped>
+html {
+  @apply text-base;
+}
+
+nav {
+  @apply flex mb-4 gap-x-2 w-full;
+  @apply select-none;
+
+  div {
+    @apply px-2 py-1.5 h-9;
+    @apply rounded-md text-sm;
+    @apply cursor-pointer;
+    @apply transition-all;
+    @apply text-primary-light bg-transparent;
+    @apply whitespace-nowrap;
+    @apply flex items-center;
+    @apply flex-shrink;
+
+    span {
+      @apply overflow-hidden;
+      @apply max-w-0 m-l-0;
+
+      transition: max-width 0.15s ease-out, margin 0.15s ease-out;
+
+      &:lang(ja) {
+        @apply text-xs;
+      }
+    }
+
+    &:hover {
+      @apply bg-primary-light/70;
+      @apply text-primary-dark;
+    }
+
+    &.active {
+      @apply cursor-default;
+      @apply bg-primary-light bg-opacity-100;
+      @apply text-primary-dark;
+
+      span {
+        @apply max-w-40 m-l-0.5;
+      }
+    }
+  }
+}
+
+main {
+  background: linear-gradient(to bottom, #141d2e 0%, #1e2f48 100%);
+  @apply min-h-screen;
+}
+
+.btn {
+  @apply text-lg rounded-md text-center select-none;
+  @apply cursor-pointer transition-all transform-gpu;
+  @apply px-2 py-1 m-2 mt-3;
+  @apply text-primary-dark;
+
+  background: linear-gradient(60deg, #c6b5a2 0%, #e5dbc7 100%);
+
+  &:hover {
+    @apply opacity-90;
+  }
+
+  &:active {
+    @apply scale-96 opacity-100;
+  }
+
+  &.is-fetching {
+    @apply opacity-50;
+    @apply pointer-events-none;
+  }
+}
+
+h1 {
+  @apply text-xl select-none mb-2;
+  @apply text-primary-light;
+}
+
+.tips {
+  @apply text-sm select-none mx-2;
+  @apply text-primary-light;
+}
+
+.divider {
+  background: linear-gradient(60deg, #c6b5a2 0%, #e5dbc7 100%);
+  @apply h-0.5 opacity-30 rounded-full;
+}
+
+.setting-panel {
+  .config-item {
+    @apply m-2;
+
+    p {
+      @apply text-base mb-1 select-none;
+      @apply text-primary-light;
+    }
+
+    input,
+    select {
+      @apply w-full;
+      @apply text-lg rounded-md transition;
+      @apply px-2 py-1;
+      background: linear-gradient(60deg, #c6b5a2 0%, #e5dbc7 100%);
+      @apply text-primary-dark;
+    }
+
+    select {
+      @apply select-none;
+    }
+  }
+}
+
+.role-panel {
+  .role-not-found {
+    @apply text-lg text-primary-light text-center;
+    @apply select-none;
+  }
+
+  .role-list {
+    @apply text-base text-primary-dark text-center;
+
+    .role-table {
+      @apply w-full border-separate;
+
+      border-spacing: 0px 5px;
+
+      tr {
+        background: linear-gradient(60deg, #c6b5a2 0%, #e5dbc7 100%);
+      }
+
+      th {
+        @apply select-none;
+      }
+
+      td:first-of-type,
+      th:first-of-type {
+        @apply rounded-l-md;
+      }
+
+      td:last-of-type,
+      th:last-of-type {
+        @apply rounded-r-md;
+      }
+
+      .delete-role-btn {
+        @apply text-primary-dark;
+        @apply flex justify-center items-start;
+        @apply text-base;
+        @apply w-full h-full;
+        @apply cursor-pointer;
+
+        svg {
+          @apply p-0.5 rounded-full;
+          @apply transition;
+        }
+
+        &:hover {
+          svg {
+            @apply bg-red-700 text-white;
+          }
+        }
+
+        &:active {
+          svg {
+            @apply opacity-70;
+          }
+        }
+      }
+    }
+  }
+}
+
+.about-panel {
+  .about-table {
+    @apply text-primary-dark text-base;
+    @apply w-full border-separate table-auto;
+    border-spacing: 8px;
+
+    .key {
+      @apply font-bold;
+      @apply select-none align-top;
+
+      div {
+        @apply whitespace-normal;
+        word-break: keep-all;
+        @apply p-1.5 rounded-md;
+        background: linear-gradient(60deg, #c6b5a2 0%, #e5dbc7 100%);
+      }
+    }
+
+    .value {
+      @apply p-1.5 rounded-md whitespace-pre-wrap;
+      background: linear-gradient(60deg, #c6b5a2 0%, #e5dbc7 100%);
+    }
+  }
+}
+
+.settings-panel {
+  .settings-list {
+    @apply px-5;
+    @apply flex flex-col gap-y-5;
+    @apply text-primary-light text-base;
+
+    .settings-item {
+
+      .top {
+        @apply flex justify-between;
+      }
+
+      .value {
+        @apply flex;
+      }
+
+      .desc {
+        @apply text-xs;
+      }
+    }
+  }
+
+  .apply-btn {
+    @apply mt-5;
+
+    &.disabled {
+      @apply filter grayscale pointer-events-none opacity-80 brightness-50;
+    }
+  }
+}
+</style>

@@ -1,14 +1,14 @@
 {
   "name": "pompom-webext",
   "displayName": "帕姆 Pom-pom",
-  "version": "0.1.6",
+  "version": "0.1.5",
   "description": "在浏览器中实时查看崩坏：星穹铁道游戏状态 Track Honkai: Star Rail stats in your browser.",
   "author": {
     "name": "daidr",
     "url": "https://daidr.me"
   },
   "packageManager": "pnpm@8.3.1",
-  "homepage": "https://github.com/daidr/paimon-webext",
+  "homepage": "https://github.com/daidr/pompom-webext",
   "scripts": {
     "dev": "npm run clear && cross-env NODE_ENV=development run-p dev:*",
     "dev:prepare": "esno scripts/prepare.ts",

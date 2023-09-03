@@ -1,6 +1,6 @@
 # Pom-Pom
 
-<img align="right" src="https://cdn.jsdelivr.net/gh/daidr/pompom-webext@main/screenshots/popup.png" width="320px" height="auto" alt="screenshot_popup" />
+<img align="right" src="./screenshots/popup.png" width="320px" height="auto" alt="screenshot_popup" />
 
 [![wakatime](https://wakatime.com/badge/github/daidr/pompom-webext.svg)](https://wakatime.com/badge/github/daidr/pompom-webext)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/daidr/pompom-webext?label=commits)

@@ -29,25 +29,7 @@ Features:
 
 ## Development
 
-```bash
-pnpm i
-
-pnpm dev
-```
-
-## Debug
-
-### firefox:
-
-```bash
-pnpm start:firefox
-```
-
-### chromium:
-
-```bash
-pnpm start:chromium
-```
+HMR is disabled because of some bug. You should always run `pnpm build` and reload the extension manually.
 
 ## Build
 
@@ -63,10 +45,7 @@ pnpm build
 ## Translations
 
 - 简体中文 @daidr
-- 繁体中文 @stevened7246
 - English @daidr
-- Русский @133718
-- 日本語(Not proofread) @Rigaln
 
 Click the badge below to help us translate Pom-Pom to your language:
 

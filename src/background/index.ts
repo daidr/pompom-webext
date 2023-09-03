@@ -212,7 +212,8 @@ const refreshData = async function (
 
         if (shouldUpdateBadge && _copyItem?.data?.current_stamina) {
           action.setBadgeText({ text: `${_copyItem.data.current_stamina}` })
-          action.setBadgeBackgroundColor({ color: '#6F9FDF' })
+          action.setBadgeBackgroundColor({ color: '#207fff' })
+          action.setBadgeTextColor({ color: '#ffffff' })
           hasUpdatedBadge = true
         }
       }

@@ -113,16 +113,17 @@ function getDS(oversea: boolean, params: Record<string, string>, body: object) {
   return `${timestamp},${randomStr},${sign}`
 }
 
+const MIYOUSHE_VERSION = '2.58.2'
+
 const HEADER_TEMPLATE_CN: Record<string, string> = {
-  'x-rpc-app_version': '2.56.1',
-  'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.56.1',
+  'x-rpc-app_version': MIYOUSHE_VERSION,
+  'User-Agent': `Mozilla/5.0 (iPhone; CPU iPhone OS 16_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/${MIYOUSHE_VERSION}`,
   'x-rpc-client_type': '5',
   'x-rpc-device_name': 'iPhone',
   'Origin': 'https://webstatic.mihoyo.com',
   'X-Requested-With': 'com.mihoyo.hyperion',
-  'x-rpc-page': '3.1.3_#/ys',
+  'x-rpc-page': 'v1.3.0-rpg_#/rpg',
   'Referer': 'https://webstatic.mihoyo.com/',
-  'x-rpc-device_fp': '38d7eed0e6198',
 }
 
 const HEADER_TEMPLATE_OS: Record<string, string> = {
@@ -427,7 +428,7 @@ async function appendDeviceFp(headers: AdvancedHeaders, uid: string, cookie: str
   let deviceFp = await readDataFromStorage(`deviceFp_${uid}`, '')
 
   // 如果 storage 中没有 deviceId，则生成一个新的 deviceId
-  if (deviceFp === '' || Date.now() - deviceFpCount > 1000 * 60 * 10) {
+  if (deviceFp === '' || Date.now() - deviceFpCount > 1000 * 60) {
     deviceFp = await generateDeviceFp(cookie)
     await writeDataToStorage(`deviceFp_${uid}`, deviceFp)
   }

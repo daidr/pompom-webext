@@ -1,8 +1,8 @@
 #
 # Your Crowdin credentials
 #
-'project_id': 'CROWDIN_PAIMON_PROJECT_ID'
-'api_token_env': 'CROWDIN_PAIMON_PERSONAL_TOKEN'
+'project_id': 'CROWDIN_POMPOM_PROJECT_ID'
+'api_token_env': 'CROWDIN_POMPOM_PERSONAL_TOKEN'
 'base_path': '.'
 'base_url': 'https://api.crowdin.com'
 

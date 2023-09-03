@@ -8,7 +8,7 @@ import { ICaptchaRequest } from '~/types'
     tabId: -1,
   }
 
-  console.info('[paimon-webext] init')
+  console.info('[pompom-webext] init')
 
   // eslint-disable-next-line
   window.postMessage({
@@ -17,7 +17,7 @@ import { ICaptchaRequest } from '~/types'
   }, '*')
 
   onMessage('request_captcha', ({ data }) => {
-    console.info('[paimon-webext] request_captcha', data)
+    console.info('[pompom-webext] request_captcha', data)
     const { uid, tabId } = data
     Config.uid = uid
     Config.tabId = tabId

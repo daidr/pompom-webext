@@ -1,7 +1,7 @@
 {
   "name": "pompom-webext",
   "displayName": "帕姆 Pom-pom",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "在浏览器中实时查看崩坏：星穹铁道游戏状态 Track Honkai: Star Rail stats in your browser.",
   "author": {
     "name": "daidr",

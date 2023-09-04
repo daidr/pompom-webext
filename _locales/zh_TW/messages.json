@@ -241,5 +241,11 @@
     },
     "options_Setting_Item_DataRefreshInterval_Protips_2": {
         "message": "Range: 3 ~ 60 min"
+    },
+    "options_Setting_Item_ManualRefresh": {
+        "message": "Manual Refresh"
+    },
+    "options_Setting_Item_ManualRefresh_Protips_1": {
+        "message": "If the manual refresh setting is set to true, we will only pull data from the API when you open the popup."
     }
 }

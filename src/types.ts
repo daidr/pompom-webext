@@ -108,4 +108,5 @@ export interface ICaptchaRequest {
 export interface ISettingsMap {
   refreshInterval: number
   badgeVisibility: boolean
+  manualRefresh: boolean
 }

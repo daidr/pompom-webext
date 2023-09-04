@@ -43,6 +43,14 @@ const getSelectedUid = async () => {
   return await readDataFromStorage<string>('selectedRole', '')
 }
 
+const getManualRefresh = async () => {
+  return await readDataFromStorage<boolean>('manualRefresh', false)
+}
+
+const setManualRefresh = async (state: boolean) => {
+  await writeDataToStorage('manualRefresh', state)
+}
+
 const getRefreshInterval = async () => {
   return await readDataFromStorage<number>('refreshInterval', 30)
 }
@@ -122,6 +130,8 @@ const refreshData = async function (
   if (refreshInterval > 20 * 60 * 1000)
     refreshInterval = refreshInterval + getRandomTimeOffset()
 
+  const manualRefresh = await getManualRefresh()
+
   // 是否显示 badge
   const badgeVisibility = await getBadgeVisibility()
 
@@ -149,11 +159,11 @@ const refreshData = async function (
   let hasUpdatedBadge = false
   // 遍历启用的 role
   for (const role of enabledRoleList) {
-    // 如果当前时间 - 上次更新时间 < 刷新时间间隔 或 uiOnly==true，则使用缓存
+    // 如果当前时间 - 上次更新时间 < 刷新时间间隔 或 uiOnly==true 或 开启了手动刷新，则使用缓存
     const useCache
       = (getLatestUpdatedTime(role)
         && Date.now() - getLatestUpdatedTime(role) < refreshInterval)
-      || uiOnly
+      || uiOnly || manualRefresh
     const data
       = useCache && !forceRefresh
         ? role.data
@@ -455,15 +465,17 @@ onMessage('read_settings', async () => {
   const settings = {
     refreshInterval: await getRefreshInterval(),
     badgeVisibility: await getBadgeVisibility(),
+    manualRefresh: await getManualRefresh(),
   }
   return settings
 })
 
 onMessage(
   'write_settings',
-  async ({ data: { refreshInterval, badgeVisibility } }) => {
+  async ({ data: { refreshInterval, badgeVisibility, manualRefresh } }) => {
     await setRefreshInterval(refreshInterval)
     await setBadgeVisibility(badgeVisibility)
+    await setManualRefresh(manualRefresh)
     await refreshData()
   },
 )

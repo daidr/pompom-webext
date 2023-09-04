@@ -84,12 +84,14 @@ const onRoleCheckboxChange = (roleUid: string, e: any) => {
 const settingsMap: ISettingsMap = reactive({
   refreshInterval: -1,
   badgeVisibility: true,
+  manualRefresh: false,
 })
 
 const getSettingsMap = async () => {
   const result = await sendMessage('read_settings', {})
   settingsMap.refreshInterval = result.refreshInterval
   settingsMap.badgeVisibility = result.badgeVisibility
+  settingsMap.manualRefresh = result.manualRefresh
 }
 
 watch(settingsMap, (newValue) => {
@@ -106,6 +108,7 @@ const setSettingsMap = async () => {
   await sendMessage('write_settings', {
     refreshInterval: settingsMap.refreshInterval,
     badgeVisibility: settingsMap.badgeVisibility,
+    manualRefresh: settingsMap.manualRefresh,
   })
   getSettingsMap()
 }
@@ -219,7 +222,7 @@ const setSettingsMap = async () => {
               </div>
             </div>
           </div>
-          <div class="settings-item">
+          <div v-show="!settingsMap.manualRefresh" class="settings-item">
             <div class="top">
               <div class="key">
                 {{ i18n.getMessage("options_Setting_Item_DataRefreshInterval") }}
@@ -233,6 +236,19 @@ const setSettingsMap = async () => {
               {{ i18n.getMessage("options_Setting_Item_DataRefreshInterval_Protips_1") }}
               <br>
               {{ i18n.getMessage("options_Setting_Item_DataRefreshInterval_Protips_2") }}
+            </div>
+          </div>
+          <div class="settings-item">
+            <div class="top">
+              <div class="key">
+                {{ i18n.getMessage("options_Setting_Item_ManualRefresh") }}
+              </div>
+              <div class="value">
+                <input v-model="settingsMap.manualRefresh" type="checkbox" :true-value="true" :false-value="false">
+              </div>
+            </div>
+            <div class="desc">
+              {{ i18n.getMessage("options_Setting_Item_ManualRefresh_Protips_1") }}
             </div>
           </div>
         </div>

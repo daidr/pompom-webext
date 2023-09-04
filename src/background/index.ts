@@ -13,6 +13,7 @@ import type {
 import {
   calcRoleDataLocally,
   createVerification,
+  generateDeviceFp,
   getRandomTimeOffset,
   getRoleDataByCookie,
   getRoleInfoByCookie,
@@ -364,7 +365,7 @@ async function _createVerification(uid: string) {
   const cookie = originRoleList[index].cookie
   const oversea = originRoleList[index].serverType === 'os'
 
-  return await createVerification(oversea, cookie)
+  return await createVerification(oversea, cookie, uid)
 }
 
 onMessage<{ uid: string }, 'request_captcha_bg'>(
@@ -372,7 +373,7 @@ onMessage<{ uid: string }, 'request_captcha_bg'>(
   async ({ data: { uid } }) => {
     // open captcha tab
     const curtab = await tabs.create({
-      url: 'https://paimon-webext.daidr.me/captcha.html',
+      url: 'https://webstatic.mihoyo.com/app/community-game-records/?game_id=6&ref=pompom',
     })
 
     // wait for curtab loaded
@@ -405,7 +406,9 @@ onMessage<{ uid: string }, 'request_captcha_bg'>(
     const verification = await createVerification(
       oversea,
       cookie,
+      uid,
     )
+
     if (verification && curtab.id)
       await sendMessage(
         'request_captcha',
@@ -438,7 +441,10 @@ async function _verifyVerification(uid: string, geetest: ICaptchaRequest) {
     oversea,
     cookie,
     geetest,
+    uid,
   )
+
+  await generateDeviceFp(cookie)
 
   getRoleInfoByCookie(oversea, cookie)
   refreshData(false, false, true)

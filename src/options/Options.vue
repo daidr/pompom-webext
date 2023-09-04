@@ -103,7 +103,6 @@ watch(settingsMap, (newValue) => {
 getSettingsMap()
 
 const setSettingsMap = async () => {
-  console.log(settingsMap.badgeVisibility)
   await sendMessage('write_settings', {
     refreshInterval: settingsMap.refreshInterval,
     badgeVisibility: settingsMap.badgeVisibility,

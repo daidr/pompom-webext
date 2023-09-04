@@ -7,12 +7,12 @@
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/daidr/pompom-webext)
 <!-- [![Mozilla Add-on](https://img.shields.io/amo/users/pompom?label=firefox&color=green)](https://addons.mozilla.org/zh-CN/firefox/addon/pompom/) -->
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/users/ecafadojbjpamdlbhdgmfhihdojeekdd?label=chrome&color=green)](https://chrome.google.com/webstore/detail/pompom/ecafadojbjpamdlbhdgmfhihdojeekdd)
-[![Microsoft Edge Addons](https://img.shields.io/badge/dynamic/json?label=edge&query=%24.activeInstallCount&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Famlfaonbmcninlpijbjkblmfgcanjdih&color=green)](https://microsoftedge.microsoft.com/addons/detail/pompom/amlfaonbmcninlpijbjkblmfgcanjdih)
+<!-- [![Chrome Web Store](https://img.shields.io/chrome-web-store/users/ecafadojbjpamdlbhdgmfhihdojeekdd?label=chrome&color=green)](https://chrome.google.com/webstore/detail/pompom/ecafadojbjpamdlbhdgmfhihdojeekdd)
+[![Microsoft Edge Addons](https://img.shields.io/badge/dynamic/json?label=edge&query=%24.activeInstallCount&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Famlfaonbmcninlpijbjkblmfgcanjdih&color=green)](https://microsoftedge.microsoft.com/addons/detail/pompom/amlfaonbmcninlpijbjkblmfgcanjdih) -->
 
 > Track Honkai: Star Rail stats in your browser.
 
-Features: 
+Features:
 
 * 🌙 Real-time stamina tracking.
 * 💰 Track your daily assignments, simulated universe points, Daily Training and End of War status.
@@ -23,13 +23,15 @@ Features:
 
 <!-- [Firefox Addons](https://addons.mozilla.org/zh-CN/firefox/addon/pompom/) -->
 
-[Chrome Webstore](https://chrome.google.com/webstore/detail/pompom/ecafadojbjpamdlbhdgmfhihdojeekdd)
+<!-- [Chrome Webstore](https://chrome.google.com/webstore/detail/pompom/ecafadojbjpamdlbhdgmfhihdojeekdd)
 
-[Edge Addons](https://microsoftedge.microsoft.com/addons/detail/amlfaonbmcninlpijbjkblmfgcanjdih)
+[Edge Addons](https://microsoftedge.microsoft.com/addons/detail/amlfaonbmcninlpijbjkblmfgcanjdih) -->
+
+Pending...
 
 ## Development
 
-HMR is disabled because of some bug. You should always run `pnpm build` and reload the extension manually.
+HMR is disabled because of some bugs. You should always run `pnpm build` and reload the extension manually.
 
 ## Build
 
@@ -39,13 +41,13 @@ pnpm build
 
 ## Credits
 
-- Friendly Mac alternative (UI Reference): [spencerwooo/PaimonMenuBar](https://github.com/spencerwooo/PaimonMenuBar)
-- Friendly Windows alternative: [ArvinZJC/PaimonTray](https://github.com/ArvinZJC/PaimonTray)
+* Friendly Mac alternative (UI Reference): [spencerwooo/PaimonMenuBar](https://github.com/spencerwooo/PaimonMenuBar)
+* Friendly Windows alternative: [ArvinZJC/PaimonTray](https://github.com/ArvinZJC/PaimonTray)
 
 ## Translations
 
-- 简体中文 @daidr
-- English @daidr
+* 简体中文 @daidr
+* English @daidr
 
 Click the badge below to help us translate Pom-Pom to your language:
 

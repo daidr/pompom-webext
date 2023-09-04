@@ -23,8 +23,6 @@ const userData = computed<IUserDataItem>(() => {
   return data ? calcRoleDataLocally(data) : ({} as IUserDataItem)
 })
 
-console.log(userData)
-
 const updateUserInfo = async () => {
   userDataList.value = await sendMessage('get_role_list', {})
   selectedUid.value = await sendMessage('get_selected_role', {})
@@ -176,7 +174,7 @@ const openCaptcha = async () => {
                   </div>
                 </div>
               </div>
-              <div class="flex flex-col gap-1 items-end">
+              <div class="flex flex-col gap-1 items-end flex-shrink-0 width-65px">
                 <div class="text-12px opacity-30 font-bold expedition-status">
                   {{
                     expedition.status === "Ongoing"

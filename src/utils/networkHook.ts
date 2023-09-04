@@ -63,7 +63,10 @@ export const initResponseRules = async () => {
       action: {
         type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
         responseHeaders: [
-          { header: 'set-cookie', operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE },
+          {
+            header: 'set-cookie',
+            operation: chrome.declarativeNetRequest.HeaderOperation.REMOVE,
+          },
         ],
       },
       condition: { urlFilter: targetPages[i] },
@@ -78,3 +81,4 @@ export const initResponseRules = async () => {
     addRules: rules,
   })
 }
+

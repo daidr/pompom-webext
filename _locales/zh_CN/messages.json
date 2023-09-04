@@ -241,5 +241,11 @@
     },
     "options_Setting_Item_DataRefreshInterval_Protips_2": {
         "message": "范围：3~60分钟"
+    },
+    "options_Setting_Item_ManualRefresh": {
+        "message": "手动刷新"
+    },
+    "options_Setting_Item_ManualRefresh_Protips_1": {
+        "message": "如果手动刷新设置为true，扩展只会在打开 popup 时从 API 拉取数据。"
     }
 }

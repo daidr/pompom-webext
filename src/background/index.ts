@@ -1,9 +1,5 @@
 import { onMessage, sendMessage } from 'webext-bridge'
-import {
-  action,
-  alarms,
-  tabs,
-} from 'webextension-polyfill'
+import { action, alarms, tabs } from 'webextension-polyfill'
 import type {
   ICaptchaRequest,
   IRoleDataItem,
@@ -27,9 +23,7 @@ import {
   getHoYoLABCookie,
   getMiHoYoCookie,
 } from '~/utils/cookie'
-import {
-  initResponseRules,
-} from '~/utils/networkHook'
+import { initResponseRules } from '~/utils/networkHook'
 
 // 一分钟
 const INTERVAL_TIME = 1
@@ -121,16 +115,17 @@ const refreshData = async function (
   forceRefresh = false,
 ) {
   // 取出刷新时间间隔 (原始数据为分钟，这里转换为毫秒)
-  // 如果 fromPopup 为 true，则间隔时间设置为 2 分钟
+  // 如果 fromPopup 为 true，则间隔时间设置为 1 分钟
   let refreshInterval = fromPopup
     ? 60 * 1000
-    : (await getRefreshInterval()) * 60 * 1000 * 2
+    : (await getRefreshInterval()) * 60 * 1000
 
   // 如果刷新间隔大于二十分钟，则进行扰动
   if (refreshInterval > 20 * 60 * 1000)
-    refreshInterval = refreshInterval + getRandomTimeOffset()
+    refreshInterval = refreshInterval + getRandomTimeOffset() * 60 * 1000
 
-  const manualRefresh = await getManualRefresh()
+  // 来自 popup 的刷新请求，强制刷新
+  const manualRefresh = fromPopup ? false : await getManualRefresh()
 
   // 是否显示 badge
   const badgeVisibility = await getBadgeVisibility()
@@ -163,7 +158,8 @@ const refreshData = async function (
     const useCache
       = (getLatestUpdatedTime(role)
         && Date.now() - getLatestUpdatedTime(role) < refreshInterval)
-      || uiOnly || manualRefresh
+      || uiOnly
+      || manualRefresh
     const data
       = useCache && !forceRefresh
         ? role.data
@@ -333,10 +329,7 @@ onMessage<{ oversea: boolean }, 'request_cookie_read'>(
     if (cookie === '')
       return -1
 
-    const result = await getRoleInfoByCookie(
-      oversea,
-      cookie,
-    )
+    const result = await getRoleInfoByCookie(oversea, cookie)
 
     if (result) {
       for (const item of result) await addNewRoleToList(oversea, item, cookie)
@@ -413,11 +406,7 @@ onMessage<{ uid: string }, 'request_captcha_bg'>(
     const cookie = originRoleList[index].cookie
     const oversea = originRoleList[index].serverType === 'os'
 
-    const verification = await createVerification(
-      oversea,
-      cookie,
-      uid,
-    )
+    const verification = await createVerification(oversea, cookie, uid)
 
     if (verification && curtab.id)
       await sendMessage(
@@ -447,12 +436,7 @@ async function _verifyVerification(uid: string, geetest: ICaptchaRequest) {
   const cookie = originRoleList[index].cookie
   const oversea = originRoleList[index].serverType === 'os'
 
-  const result = await verifyVerification(
-    oversea,
-    cookie,
-    geetest,
-    uid,
-  )
+  const result = await verifyVerification(oversea, cookie, geetest, uid)
 
   await generateDeviceFp(cookie)
 

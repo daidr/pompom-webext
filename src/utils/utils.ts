@@ -1,5 +1,12 @@
 import { storage } from 'webextension-polyfill'
-import type { ICaptchaRequest, ICaptchaResponse, IRoleDataItem, IUserData, IUserDataItem, serverRegions } from '../types'
+import type {
+  ICaptchaRequest,
+  ICaptchaResponse,
+  IRoleDataItem,
+  IUserData,
+  IUserDataItem,
+  serverRegions,
+} from '../types'
 import { md5 } from './md5'
 import type { AdvancedHeaders } from './advancedFetch'
 import { advancedFetch } from './advancedFetch'
@@ -13,22 +20,26 @@ export const writeDataToStorage = async function <T>(key: string, data: T) {
   await storage.local.set({ [key]: data })
 }
 
-export const range = (start: number, end: number) => Array.from({ length: end - start + 1 }, (_, i) => start + i)
+export const range = (start: number, end: number) =>
+  Array.from({ length: end - start + 1 }, (_, i) => start + i)
 
 // 从storage读取数据
-export const readDataFromStorage = async function <T>(key: string, defaultVal: T): Promise<T> {
+export const readDataFromStorage = async function <T>(
+  key: string,
+  defaultVal: T,
+): Promise<T> {
   const data = await storage.local.get(key)
   if (data[key] !== undefined)
     return data[key]
-  else
-    return defaultVal
+  else return defaultVal
 }
 
 function uuid() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = Math.random() * 16 | 0; const v = c === 'x' ? r : (r & 0x3 | 0x8)
-    return v.toString(16)
-  })
+  function S4() {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+  }
+
+  return `${S4() + S4()}-${S4()}-${S4()}-${S4()}-${S4()}${S4()}${S4()}`
 }
 
 export function generateSeed(length = 16) {
@@ -93,7 +104,7 @@ function stringifyParams(params: Record<string, string>) {
   const keys = Object.keys(params)
   keys.sort()
   const values: string[] = []
-  keys.forEach(key => {
+  keys.forEach((key) => {
     values.push(`${key}=${params[key]}`)
   })
 
@@ -105,9 +116,13 @@ function stringifyParams(params: Record<string, string>) {
 function getDS(oversea: boolean, params: Record<string, string>, body: object) {
   const timestamp = Math.floor(Date.now() / 1000)
   const randomStr = randomIntFromInterval(100000, 200000)
-  const bodyStr = (body && Object.keys(body).length > 0) ? JSON.stringify(body) : ''
-  const paramStr = (params && Object.keys(params).length > 0) ? stringifyParams(params) : ''
-  const salt = oversea ? 'okr4obncj8bw5a65hbnn5oo6ixjc3l9w' : 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
+  const bodyStr
+    = body && Object.keys(body).length > 0 ? JSON.stringify(body) : ''
+  const paramStr
+    = params && Object.keys(params).length > 0 ? stringifyParams(params) : ''
+  const salt = oversea
+    ? 'okr4obncj8bw5a65hbnn5oo6ixjc3l9w'
+    : 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
   const text = `salt=${salt}&t=${timestamp}&r=${randomStr}&b=${bodyStr}&q=${paramStr}`
   const sign = md5(text)
   return `${timestamp},${randomStr},${sign}`
@@ -120,24 +135,32 @@ const HEADER_TEMPLATE_CN: Record<string, string> = {
   'User-Agent': `Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/${MIYOUSHE_VERSION}`,
   'x-rpc-client_type': '5',
   'x-rpc-sys_version': '17.0',
-  'x-rpc-tool_version': 'v1.3.0-rpg',
+  'x-rpc-tool_version': 'v1.3.1-rpg',
   'x-rpc-device_name': 'iPhone',
   'Origin': 'https://webstatic.mihoyo.com',
   'X-Requested-With': 'com.mihoyo.hyperion',
-  'x-rpc-page': 'v1.3.0-rpg_#/rpg',
+  'x-rpc-page': 'v1.3.1-rpg_#/rpg',
   'Referer': 'https://webstatic.mihoyo.com/',
+  'sec-fetch-dest': 'empty',
+  'sec-fetch-site': 'same-site',
 }
 
 const HEADER_TEMPLATE_OS: Record<string, string> = {
   'x-rpc-app_version': '2.22.0',
-  'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBSOversea/2.22.0',
+  'User-Agent':
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 16_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBSOversea/2.22.0',
   'x-rpc-client_type': '2',
   'Origin': 'https://act.hoyolab.com',
   'X-Requested-With': 'com.mihoyo.hoyolab',
   'Referer': 'https://act.hoyolab.com',
 }
 
-async function getHeader(oversea: boolean, params: Record<string, string>, body: object, ds: boolean) {
+async function getHeader(
+  oversea: boolean,
+  params: Record<string, string>,
+  body: object,
+  ds: boolean,
+) {
   const client = oversea ? HEADER_TEMPLATE_OS : HEADER_TEMPLATE_CN
   const headers = { ...client }
 
@@ -146,11 +169,14 @@ async function getHeader(oversea: boolean, params: Record<string, string>, body:
     headers.DS = dsStr
   }
 
-  headers['x-rpc-device_id'] = await getDeviceId()
+  headers['x-rpc-device_id'] = (await getDeviceId()).toUpperCase()
   return headers
 }
 
-async function getRoleInfoByCookie(oversea: boolean, cookie: string): Promise<IRoleDataItem[] | false> {
+async function getRoleInfoByCookie(
+  oversea: boolean,
+  cookie: string,
+): Promise<IRoleDataItem[] | false> {
   // 根据 oversea 参数选择对应 api 地址
   const url = oversea
     ? 'https://api-os-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=hkrpg_global'
@@ -166,14 +192,13 @@ async function getRoleInfoByCookie(oversea: boolean, cookie: string): Promise<IR
     method: 'GET',
     headers,
   })
-    .then(response => {
+    .then((response) => {
       return response.json()
     })
     .then((data) => {
       if (data.retcode === 0)
         return data.data.list
-      else
-        return false
+      else return false
     })
     .catch(() => {
       return false
@@ -181,9 +206,18 @@ async function getRoleInfoByCookie(oversea: boolean, cookie: string): Promise<IR
   return _ret
 }
 
-async function getRoleDataByCookie(oversea: boolean, cookie: string, role_id: string, serverRegion: serverRegions): Promise<IUserData | false | number> {
+async function getRoleDataByCookie(
+  oversea: boolean,
+  cookie: string,
+  role_id: string,
+  serverRegion: serverRegions,
+): Promise<IUserData | false | number> {
   // 根据 oversea 参数选择对应 api 地址
-  const url = new URL(oversea ? 'https://bbs-api-os.hoyolab.com/game_record/app/hkrpg/api/note' : 'https://api-takumi-record.mihoyo.com/game_record/app/hkrpg/api/note')
+  const url = new URL(
+    oversea
+      ? 'https://bbs-api-os.hoyolab.com/game_record/app/hkrpg/api/note'
+      : 'https://api-takumi-record.mihoyo.com/game_record/app/hkrpg/api/note',
+  )
 
   // 补全 url query
   const params = {
@@ -212,7 +246,10 @@ async function getRoleDataByCookie(oversea: boolean, cookie: string, role_id: st
   })
     .then(async (response) => {
       const headers = response.headers
-      await writeDataToStorage(`traceId_${role_id}`, headers.get('x-trace-id') || '')
+      await writeDataToStorage(
+        `traceId_${role_id}`,
+        headers.get('x-trace-id') || '',
+      )
       return response.json()
     })
     .then((data) => {
@@ -222,6 +259,7 @@ async function getRoleDataByCookie(oversea: boolean, cookie: string, role_id: st
         // risk control
         return 1034
       } else {
+        writeDataToStorage(`deviceFp_${role_id}_request`, true)
         return false
       }
     })
@@ -231,9 +269,17 @@ async function getRoleDataByCookie(oversea: boolean, cookie: string, role_id: st
   return _ret
 }
 
-async function createVerification(oversea: boolean, cookie: string, uid: string): Promise<ICaptchaResponse | false> {
+async function createVerification(
+  oversea: boolean,
+  cookie: string,
+  uid: string,
+): Promise<ICaptchaResponse | false> {
   // 根据 oversea 参数选择对应 api 地址
-  const url = new URL(oversea ? 'https://api-takumi-record.mihoyo.com/game_record/app/card/wapi/createVerification' : 'https://api-takumi-record.mihoyo.com/game_record/app/card/wapi/createVerification')
+  const url = new URL(
+    oversea
+      ? 'https://api-takumi-record.mihoyo.com/game_record/app/card/wapi/createVerification'
+      : 'https://api-takumi-record.mihoyo.com/game_record/app/card/wapi/createVerification',
+  )
 
   // 补全 url query
   const params = {
@@ -250,7 +296,8 @@ async function createVerification(oversea: boolean, cookie: string, uid: string)
   headers.Cookie = cookie
 
   // 为 header 追加 x-rpc-challenge_path
-  headers['x-rpc-challenge_path'] = 'https://api-takumi-record.mihoyo.com/game_record/app/hkrpg/api/note'
+  headers['x-rpc-challenge_path']
+    = 'https://api-takumi-record.mihoyo.com/game_record/app/hkrpg/api/note'
   headers['x-rpc-challenge_game'] = '6'
 
   const traceId = await readDataFromStorage(`traceId_${uid}`, '')
@@ -269,12 +316,11 @@ async function createVerification(oversea: boolean, cookie: string, uid: string)
     method: 'GET',
     headers,
   })
-    .then(response => response.json())
+    .then((response) => response.json())
     .then((data) => {
       if (data.retcode === 0)
         return data.data
-      else
-        return false
+      else return false
     })
     .catch(() => {
       return false
@@ -282,9 +328,18 @@ async function createVerification(oversea: boolean, cookie: string, uid: string)
   return _ret
 }
 
-async function verifyVerification(oversea: boolean, cookie: string, geetest: ICaptchaRequest, uid: string): Promise<boolean> {
+async function verifyVerification(
+  oversea: boolean,
+  cookie: string,
+  geetest: ICaptchaRequest,
+  uid: string,
+): Promise<boolean> {
   // 根据 oversea 参数选择对应 api 地址
-  const url = new URL(oversea ? 'https://api-takumi-record.mihoyo.com/game_record/app/card/wapi/verifyVerification' : 'https://api-takumi-record.mihoyo.com/game_record/app/card/wapi/verifyVerification')
+  const url = new URL(
+    oversea
+      ? 'https://api-takumi-record.mihoyo.com/game_record/app/card/wapi/verifyVerification'
+      : 'https://api-takumi-record.mihoyo.com/game_record/app/card/wapi/verifyVerification',
+  )
 
   // 生成 header
   const headers = await getHeader(oversea, {}, geetest, true)
@@ -293,7 +348,8 @@ async function verifyVerification(oversea: boolean, cookie: string, geetest: ICa
   headers.Cookie = cookie
 
   // 为 header 追加 x-rpc-challenge_path
-  headers['x-rpc-challenge_path'] = 'https://api-takumi-record.mihoyo.com/game_record/app/hkrpg/api/note'
+  headers['x-rpc-challenge_path']
+    = 'https://api-takumi-record.mihoyo.com/game_record/app/hkrpg/api/note'
   headers['x-rpc-challenge_game'] = '6'
 
   const traceId = await readDataFromStorage(`traceId_${uid}`, '')
@@ -308,7 +364,7 @@ async function verifyVerification(oversea: boolean, cookie: string, geetest: ICa
     headers,
     body: JSON.stringify(geetest),
   })
-    .then(response => response.json())
+    .then((response) => response.json())
     .then((data) => {
       if (data.retcode === 0) {
         writeDataToStorage(`challenge_${uid}`, data.data.challenge)
@@ -323,6 +379,28 @@ async function verifyVerification(oversea: boolean, cookie: string, geetest: ICa
   return _ret
 }
 
+export async function getUserFullInfo(cookie: string): Promise<any> {
+  const url = 'https://bbs-api.mihoyo.com/user/wapi/getUserFullInfo?gids=2'
+  const headers = {
+    Cookie: cookie,
+    Accept: 'application/json, text/plain, */*',
+    Connection: 'keep-alive',
+    Host: 'bbs-api.mihoyo.com',
+    Origin: 'https://m.bbs.mihoyo.com',
+    Referer: ' https://m.bbs.mihoyo.com/',
+  }
+  let res = await advancedFetch(url, {
+    method: 'GET',
+    headers,
+  })
+
+  if (!res.ok) {
+    return false
+  }
+  res = await res.json()
+  return res
+}
+
 const calcRoleDataLocally = (role: IUserDataItem) => {
   const _role: IUserDataItem = JSON.parse(JSON.stringify(role))
 
@@ -333,17 +411,25 @@ const calcRoleDataLocally = (role: IUserDataItem) => {
   const curStamina = _role.data.current_stamina
 
   // 开拓力每 6 分钟恢复 1 点
-  _role.data.current_stamina = Math.min(maxStamina, curStamina + Math.floor((curTimestamp - updateTimestamp) / 1000 / 60 / 6))
+  _role.data.current_stamina = Math.min(
+    maxStamina,
+    curStamina + Math.floor((curTimestamp - updateTimestamp) / 1000 / 60 / 6),
+  )
 
   // 更新开拓力恢复时间 秒
-  _role.data.stamina_recover_time = _role.data.stamina_recover_time - Math.floor((curTimestamp - updateTimestamp) / 1000)
+  _role.data.stamina_recover_time
+    = _role.data.stamina_recover_time
+    - Math.floor((curTimestamp - updateTimestamp) / 1000)
 
   if (_role.data.expeditions && _role.data.expeditions.length > 0) {
     for (const expedition of _role.data.expeditions) {
       if (expedition.status === 'Ongoing') {
         // 单位为 秒
         const remainTime = Number(expedition.remaining_time)
-        expedition.remaining_time = Math.max(0, remainTime - Math.floor((curTimestamp - updateTimestamp) / 1000)).toString()
+        expedition.remaining_time = Math.max(
+          0,
+          remainTime - Math.floor((curTimestamp - updateTimestamp) / 1000),
+        ).toString()
         if (expedition.remaining_time === '0')
           expedition.status = 'Finished'
       }
@@ -353,7 +439,11 @@ const calcRoleDataLocally = (role: IUserDataItem) => {
   return _role
 }
 
-async function getGeetestChallenge(oversea: boolean, challenge: string, gt: string): Promise<string | false> {
+async function getGeetestChallenge(
+  oversea: boolean,
+  challenge: string,
+  gt: string,
+): Promise<string | false> {
   const url = `https://apiv6.geetest.com/ajax.php?pt=3&client_type=web_mobile&lang=zh-cn&challenge=${challenge}&gt=${gt}`
 
   // 为 header 追加 cookie
@@ -364,11 +454,11 @@ async function getGeetestChallenge(oversea: boolean, challenge: string, gt: stri
     method: 'GET',
     headers,
   })
-    .then(response => {
+    .then((response) => {
       const data = response.text()
       return data
     })
-    .then(text => {
+    .then((text) => {
       const bracketLeft = text.indexOf('{')
       const bracketRight = text.lastIndexOf('}')
       return JSON.parse(text.substring(bracketLeft, bracketRight + 1))
@@ -380,8 +470,9 @@ async function getGeetestChallenge(oversea: boolean, challenge: string, gt: stri
         } else {
           return false
         }
+      } else {
+        return false
       }
-      else { return false }
     })
     .catch(() => {
       return false
@@ -417,7 +508,7 @@ export const generateDeviceFp = async (cookie: string) => {
   })
   const body = {
     seed_id: seed,
-    device_id: deviceId,
+    device_id: deviceId.toUpperCase(),
     platform: '5',
     seed_time: time,
     ext_fields,
@@ -438,14 +529,13 @@ export const generateDeviceFp = async (cookie: string) => {
     headers,
     body: JSON.stringify(body),
   })
-    .then(response => {
+    .then((response) => {
       return response.json()
     })
     .then((data) => {
       if (data.data.code === 200) {
         return data.data.device_fp
-      }
-      else {
+      } else {
         console.error(new Error(`generateDeviceFp failed: ${data.data.msg}`))
         return generateSeed(13)
       }
@@ -457,13 +547,17 @@ export const generateDeviceFp = async (cookie: string) => {
   return _ret
 }
 
-async function appendDeviceFp(headers: AdvancedHeaders, uid: string, cookie: string) {
-  const deviceFpCount = await readDataFromStorage(`deviceFp_${uid}_count`, 0)
+async function appendDeviceFp(
+  headers: AdvancedHeaders,
+  uid: string,
+  cookie: string,
+) {
+  const deviceFpRefreshRequest = await readDataFromStorage(`deviceFp_${uid}_request`, false)
 
   let deviceFp = await readDataFromStorage(`deviceFp_${uid}`, '')
 
   // 如果 storage 中没有 deviceId，则生成一个新的 deviceId
-  if (deviceFp === '' || Date.now() - deviceFpCount > 1000 * 60) {
+  if (deviceFp === '' || deviceFpRefreshRequest) {
     deviceFp = await generateDeviceFp(cookie)
     await writeDataToStorage(`deviceFp_${uid}`, deviceFp)
   }
@@ -484,10 +578,22 @@ async function appendChallenge(headers: AdvancedHeaders, uid: string) {
   return headers
 }
 
-export { md5, randomIntFromInterval, getTime, getClock, getDS, getHeader, getRoleInfoByCookie, getRoleDataByCookie, createVerification, verifyVerification, calcRoleDataLocally, getGeetestChallenge }
+export {
+  md5,
+  randomIntFromInterval,
+  getTime,
+  getClock,
+  getDS,
+  getHeader,
+  getRoleInfoByCookie,
+  getRoleDataByCookie,
+  createVerification,
+  verifyVerification,
+  calcRoleDataLocally,
+  getGeetestChallenge,
+}
 
 // 随机生成-5到5的整数
 export const getRandomTimeOffset = () => {
   return Math.floor(Math.random() * 11) - 5
 }
-

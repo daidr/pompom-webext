@@ -57,13 +57,13 @@
         "message": "Текущая Энергия Освоения"
     },
     "popup_FullyReplenishedTitle": {
-        "message": "Полность заполнен"
+        "message": "Полностью заполнится"
     },
     "popup_ETATitle": {
         "message": "Время прибытия"
     },
     "popup_ExpeditionsTitle": {
-        "message": "Нужно выполнить"
+        "message": "Выполнение поручений"
     },
     "popup_ExploringStatus": {
         "message": "В экспедиции"

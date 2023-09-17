@@ -19,7 +19,7 @@ export async function getManifest() {
       default_popup: './dist/popup/index.html',
     },
     background: {
-      service_worker: './dist/background/index.mjs',
+      service_worker: './dist/background/index.js',
     },
     content_scripts: [
       {

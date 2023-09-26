@@ -48,6 +48,7 @@ pnpm build
 
 * 简体中文 @daidr
 * English @daidr
+* русский [@DarkAssassin48](https://crowdin.com/profile/darkassassin)
 
 Click the badge below to help us translate Pom-Pom to your language:
 

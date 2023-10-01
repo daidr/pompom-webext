@@ -23,9 +23,9 @@ Features:
 
 <!-- [Firefox Addons](https://addons.mozilla.org/zh-CN/firefox/addon/pompom/) -->
 
-<!-- [Chrome Webstore](https://chrome.google.com/webstore/detail/pompom/ecafadojbjpamdlbhdgmfhihdojeekdd)
+[Chrome Webstore](https://chromewebstore.google.com/detail/akaohghdgcakognnomndghdbcinjdjhb)
 
-[Edge Addons](https://microsoftedge.microsoft.com/addons/detail/amlfaonbmcninlpijbjkblmfgcanjdih) -->
+<!-- [Edge Addons](https://microsoftedge.microsoft.com/addons/detail/amlfaonbmcninlpijbjkblmfgcanjdih) -->
 
 Pending...
 

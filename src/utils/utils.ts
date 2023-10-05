@@ -35,11 +35,7 @@ export const readDataFromStorage = async function <T>(
 }
 
 function uuid() {
-  function S4() {
-    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
-  }
-
-  return `${S4() + S4()}-${S4()}-${S4()}-${S4()}-${S4()}${S4()}${S4()}`
+  return crypto.randomUUID()
 }
 
 export function generateSeed(length = 16) {
@@ -51,15 +47,29 @@ export function generateSeed(length = 16) {
   return result
 }
 
+const latestDeviceMetaRandom = 'eSF0jTCYQLQBxsl'
+const deviceIdNeedUpdate = async () => {
+  const deviceId = await readDataFromStorage('deviceId', '')
+  if (deviceId === '') {
+    return true
+  }
+  const prevRandom = await readDataFromStorage('deviceIdRandom', '')
+  if (prevRandom !== latestDeviceMetaRandom) {
+    return true
+  }
+  return false
+}
+
 // 随机生成的 deviceId
 export const getDeviceId = async () => {
   // 首先尝试从 storage 中读取 deviceId
   let deviceId = await readDataFromStorage('deviceId', '')
 
   // 如果 storage 中没有 deviceId，则生成一个新的 deviceId
-  if (deviceId === '') {
+  if (deviceId === '' || (await deviceIdNeedUpdate())) {
     deviceId = uuid()
     await writeDataToStorage('deviceId', deviceId)
+    await writeDataToStorage('deviceIdRandom', latestDeviceMetaRandom)
   }
 
   return deviceId
@@ -128,7 +138,7 @@ function getDS(oversea: boolean, params: Record<string, string>, body: object) {
   return `${timestamp},${randomStr},${sign}`
 }
 
-const MIYOUSHE_VERSION = '2.58.2'
+const MIYOUSHE_VERSION = '2.59.1'
 
 const HEADER_TEMPLATE_CN: Record<string, string> = {
   'x-rpc-app_version': MIYOUSHE_VERSION,
@@ -233,7 +243,7 @@ async function getRoleDataByCookie(
 
   if (!oversea) {
     // 为 header 追加 fp
-    await appendDeviceFp(headers, role_id, cookie)
+    cookie = await appendDeviceFp(headers, role_id, cookie)
     await appendChallenge(headers, role_id)
   }
 
@@ -308,7 +318,7 @@ async function createVerification(
 
   if (!oversea) {
     // 为 header 追加 fp
-    await appendDeviceFp(headers, uid, cookie)
+    cookie = await appendDeviceFp(headers, uid, cookie)
   }
 
   // 发送请求
@@ -480,7 +490,7 @@ async function getGeetestChallenge(
   return _ret
 }
 
-export const generateDeviceFp = async (cookie: string) => {
+export const generateDeviceFp = async (cookie: string, oldDeviceFp: string) => {
   const seed = generateSeed(16)
   const time = `${Date.now()}`
   const deviceId = await getDeviceId()
@@ -502,6 +512,7 @@ export const generateDeviceFp = async (cookie: string) => {
     cpuClass: 'unknown',
     ifNotTrack: 'unknown',
     ifAdBlock: 0,
+    hasLiedLanguage: 0,
     hasLiedResolution: 1,
     hasLiedOs: 0,
     hasLiedBrowser: 0,
@@ -513,7 +524,7 @@ export const generateDeviceFp = async (cookie: string) => {
     seed_time: time,
     ext_fields,
     app_name: 'account_cn',
-    device_fp: '38d7ee834d1e9',
+    device_fp: oldDeviceFp || '38d7ee834d1e9',
   }
 
   const url = 'https://public-data-api.mihoyo.com/device-fp/api/getFp'
@@ -534,15 +545,15 @@ export const generateDeviceFp = async (cookie: string) => {
     })
     .then((data) => {
       if (data.data.code === 200) {
-        return data.data.device_fp
+        return [seed, time, data.data.device_fp]
       } else {
         console.error(new Error(`generateDeviceFp failed: ${data.data.msg}`))
-        return generateSeed(13)
+        return [seed, time, generateSeed(13)]
       }
     })
     .catch((e) => {
       console.error(e)
-      return generateSeed(13)
+      return [seed, time, generateSeed(13)]
     })
   return _ret
 }
@@ -552,18 +563,26 @@ async function appendDeviceFp(
   uid: string,
   cookie: string,
 ) {
-  const deviceFpRefreshRequest = await readDataFromStorage(`deviceFp_${uid}_request`, false)
+  // const deviceFpRefreshRequest = await readDataFromStorage(
+  //   `deviceFp_${uid}_request`,
+  //   false,
+  // )
+
+  const deviceFpRefreshRequest = true
 
   let deviceFp = await readDataFromStorage(`deviceFp_${uid}`, '')
+  let seed = await readDataFromStorage(`deviceFp_seed_${uid}`, '')
+  let time = await readDataFromStorage(`deviceFp_time_${uid}`, '')
 
   // 如果 storage 中没有 deviceId，则生成一个新的 deviceId
   if (deviceFp === '' || deviceFpRefreshRequest) {
-    deviceFp = await generateDeviceFp(cookie)
+    [seed, time, deviceFp] = await generateDeviceFp(cookie, deviceFp)
     await writeDataToStorage(`deviceFp_${uid}`, deviceFp)
+    await writeDataToStorage(`deviceFp_seed_${uid}`, seed)
+    await writeDataToStorage(`deviceFp_time_${uid}`, time)
   }
-  await writeDataToStorage(`deviceFp_${uid}_count`, Date.now())
   headers['x-rpc-device_fp'] = deviceFp
-  return headers
+  return `DEVICEFP_SEED_ID=${seed};DEVICEFP_SEED_TIME=${time};DEVICEFP=${deviceFp};${cookie};`
 }
 
 async function appendChallenge(headers: AdvancedHeaders, uid: string) {

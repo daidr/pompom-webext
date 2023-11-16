@@ -3,7 +3,7 @@
         "message": "帕姆"
     },
     "pluginDesc": {
-        "message": "Track Honkai: Star Rail stats in your browser."
+        "message": "在瀏覽器中即時查看《崩壞：星穹鐵道》遊戲狀態"
     },
     "prod_gf_cn": {
         "message": "星穹列车(CN)"
@@ -63,189 +63,189 @@
         "message": "預計回滿時間"
     },
     "popup_ExpeditionsTitle": {
-        "message": "Assignments"
+        "message": "委託"
     },
     "popup_ExploringStatus": {
-        "message": "Exploring"
+        "message": "派遣中"
     },
     "popup_FinishedStatus": {
-        "message": "Finished"
+        "message": "已完成"
     },
     "popup_ReservedStaminaTitle": {
-        "message": "Reserved Power"
+        "message": "後備開拓力"
     },
     "popup_ReservedStaminaFull": {
-        "message": "(Full)"
+        "message": "(已滿)"
     },
     "popup_DailyTrainingTitle": {
-        "message": "Daily Training"
+        "message": "每日實訓"
     },
     "popup_UniversePoints": {
-        "message": "Simulated Universe"
+        "message": "模擬宇宙"
     },
     "popup_WeeklyBossesTitle": {
-        "message": "Echo of War"
+        "message": "歷戰餘響"
     },
     "popup_Available": {
-        "message": "Available"
+        "message": "可用"
     },
     "popup_ConfigurationTitle": {
-        "message": "Configuration"
+        "message": "設定"
     },
     "popup_ConfigurationTips": {
-        "message": "You just need to complete a few simple configurations, and then you are ready to enjoy it!"
+        "message": "您需要進行一些簡單的設定，完成後便可以正常使用啦！"
     },
     "popup_ConfigurationButtonText": {
-        "message": "Open Options"
+        "message": "打開設定頁面"
     },
     "popup_UpdateTimeTitle": {
-        "message": "Update: "
+        "message": "上次更新: "
     },
     "popup_ErrorTitle": {
-        "message": "Error"
+        "message": "發生錯誤"
     },
     "popup_ErrorTips_1": {
-        "message": "We are unable to access your game data, try going to the options page to check if the configuration below is correct."
+        "message": "擴展無法獲取您的遊戲資料，試試前往設置頁面檢查下面的設置是否正確。"
     },
     "popup_ErrorTips_2": {
-        "message": "Is the network currently available?"
+        "message": "當前網路是否可用"
     },
     "popup_ErrorTips_3": {
-        "message": "Are there any roles that are currently enabled?"
+        "message": "當前是否存在啟用的角色"
     },
     "popup_ErrorTips_4": {
-        "message": "If you are in China Mainland, you need a proxy to access the data of the overseas service"
+        "message": "如果您處於中國大陸，查看國際服資料需要自備魔法上網"
     },
     "popup_ErrorTips_5": {
-        "message": "The current account triggers risk control and requires HMI verification"
+        "message": "當前帳號觸發風險控制，需要進行人機驗證"
     },
     "popup_ErrorTips_6": {
-        "message": "Login to your account and re-import your roles"
+        "message": "登錄到您的帳戶並重新導入您的角色"
     },
     "popup_ErrorTips_7": {
-        "message": "Click on the captcha button below"
+        "message": "點擊下面的人機驗證按鈕"
     },
     "popup_ErrorOpenConfigButtonText": {
-        "message": "Open Options"
+        "message": "打開設定頁面"
     },
     "popup_ErrorRefreshButtonText": {
-        "message": "Refresh"
+        "message": "重新整理"
     },
     "popup_CaptchaButtonText": {
-        "message": "Open Captcha Page"
+        "message": "打開人機驗證"
     },
     "options_Nav_AddNewRole": {
-        "message": "Add New Roles"
+        "message": "增加新角色"
     },
     "options_Nav_RoleListSetting": {
-        "message": "Role List"
+        "message": "角色列表"
     },
     "options_Nav_Setting": {
-        "message": "Settings"
+        "message": "設定"
     },
     "options_Nav_About": {
-        "message": "About"
+        "message": "關於"
     },
     "options_SelectServer": {
-        "message": "I. Choose Region"
+        "message": "第一步：選擇帳號地區"
     },
     "options_ServerCN": {
-        "message": "China Mainland"
+        "message": "陸服"
     },
     "options_ServerOS": {
-        "message": "Oversea"
+        "message": "海外服"
     },
     "options_FetchUserCookie": {
-        "message": "II. Fetch Cookies"
+        "message": "第二步：獲取用戶憑證"
     },
     "options_Tips_1": {
-        "message": "We need your HoYoLAB user credentials (cookies) in order to access the relevant data."
+        "message": "擴展需要您的HoYoLAB用戶憑證 (cookies) 才能夠獲取相關資料。"
     },
     "options_Tips_2": {
-        "message": "Don't worry, all these data are stored locally and will not be submitted to any third party service."
+        "message": "別擔心，這些資料均儲存在本地，且不會提交到任何伺服器。"
     },
     "options_Tips_3": {
-        "message": "Please make sure you are logged into <a href='https://www.miyoushe.com/ys' target='_blank'>HoYoLAB(China)</a> in this browser before clicking on the button below <br>After successfully obtaining cookies, the Extension will restore HoYoLAB to a non-logged-in state to prevent cookies from being invalidated due to manual logout"
+        "message": "點擊下面的按鈕之前，請確保您已經在此瀏覽器登錄了 <a href='https://www.miyoushe.com/ys' target='_blank'>米遊社(國服)</a> <br>擴展在成功獲取cookies後，會將米遊社恢復到未登錄狀態，防止手動登出導致cookies失效"
     },
     "options_Tips_4": {
-        "message": "Please make sure you are logged into <a href='https://www.hoyolab.com/home' target='_blank'>HoYoLAB</a> in this browser before clicking on the button below <br>After successfully obtaining cookies, the Extension will restore HoYoLAB to a non-logged-in state to prevent cookies from being invalidated due to manual logout <br>(HoYoLAB blocked access from China Mainland, users from China Mainland need a proxy to get the data of overseas service)"
+        "message": "點擊下面的按鈕之前，請確保您已經在此瀏覽器登錄了 <a href='https://www.hoyolab.com/home' target='_blank'>HoYoLAB</a> <br>擴展在成功獲取cookies後，會將HoYoLAB恢復到未登錄狀態，防止手動登出導致cookies失效 <br>(HoYoLAB 遮罩了中國大陸的訪問，中國大陸的使用者添加海外服需要自備魔法上網)"
     },
     "options_FetchBtnTitle": {
-        "message": "Fetch Cookies"
+        "message": "獲取用戶憑證"
     },
     "options_FetchBtnAlert_1": {
-        "message": "Failed to fetch roles"
+        "message": "角色獲取失敗"
     },
     "options_FetchBtnAlert_2": {
-        "message": "Successfully added $1 role"
+        "message": "成功添加 $1 個角色"
     },
     "options_FetchBtnAlert_3": {
-        "message": "No role binding"
+        "message": "未綁定角色"
     },
     "options_Role_NoRoleFound": {
-        "message": "No role found"
+        "message": "沒有找到任何角色"
     },
     "options_Role_IsEnabledTitle": {
-        "message": "Enabled"
+        "message": "啟用"
     },
     "options_Role_RoleNameTitle": {
-        "message": "Nickname(uid)"
+        "message": "暱稱(uid)"
     },
     "options_Role_RoleServerTitle": {
-        "message": "Server"
+        "message": "伺服器"
     },
     "options_Role_RoleActionTitle": {
-        "message": "Operation"
+        "message": "操作"
     },
     "options_About_VersionTitle": {
-        "message": "Version"
+        "message": "版本"
     },
     "options_About_AuthorTitle": {
-        "message": "Author"
+        "message": "作者"
     },
     "options_About_Author": {
-        "message": "<a class='reverse' href='https://daidr.me' target='_blank'>daidr</a>"
+        "message": "<a class='reverse' href='https://daidr.me' target='_blank'>戴兜</a>"
     },
     "options_About_OpenSourceTitle": {
-        "message": "Open Source"
+        "message": "開源說明"
     },
     "options_About_OpenSource": {
-        "message": "The extension is open source and hosted on <a class='reverse' href='https://github.com/daidr/pompom-webext' target='_blank'>Github</a>, obey the MIT license to use the source code please.\nYou can try to create <a class='reverse' href='https://github.com/daidr/pompom-webext/issues' target='_blank'>Issues</a> if you have any problems and I'll help you solve them as much as possible. It would be better if you could create PR👍"
+        "message": "本擴展開源在 <a class='reverse' href='https://github.com/daidr/pompom-webext' target='_blank'>Github</a>，使用源碼請遵循 MIT 開源協定。\n遇到問題可以嘗試給我提 <a class='reverse' href='https://github.com/daidr/pompom-webext/issues' target='_blank'>Issues</a>，我會盡可能幫助你解決問題。也歡迎大家發 PR👍"
     },
     "options_About_ThankTitle": {
-        "message": "Credits"
+        "message": "致謝"
     },
     "options_About_Thank": {
-        "message": "Special thanks to all contributors of this extension\nUI Reference: <a class='reverse' href='https://github.com/spencerwooo/PaimonMenuBar' target='_blank'>PaimonMenuBar</a>"
+        "message": "感謝本擴展倉庫的所有貢獻者\n本擴展靈感來源 <a class='reverse' href='https://github.com/spencerwooo/PaimonMenuBar' target='_blank'>PaimonMenuBar</a>"
     },
     "options_About_DonateTitle": {
-        "message": "Donate"
+        "message": "贊助"
     },
     "options_Setting_Apply": {
-        "message": "Apply"
+        "message": "套用"
     },
     "options_Setting_Unsaved": {
-        "message": "Unsaved"
+        "message": "尚未儲存"
     },
     "options_Setting_Item_Badge": {
-        "message": "Extension Badge"
+        "message": "擴展徽章"
     },
     "options_Setting_Item_DataRefreshInterval": {
-        "message": "Refresh Interval"
+        "message": "重整間隔"
     },
     "options_Setting_Item_DataRefreshInterval_Unit": {
-        "message": "m"
+        "message": "分鐘"
     },
     "options_Setting_Item_DataRefreshInterval_Protips_1": {
-        "message": "If the value is longer than 10 minutes, we'll attempt to impute some of the data locally."
+        "message": "如果該數值超過 10 分鐘，我們將嘗試在本地插補某些數據。"
     },
     "options_Setting_Item_DataRefreshInterval_Protips_2": {
-        "message": "Range: 3 ~ 60 min"
+        "message": "範圍：3~60分鐘"
     },
     "options_Setting_Item_ManualRefresh": {
-        "message": "Manual Refresh"
+        "message": "手動重整"
     },
     "options_Setting_Item_ManualRefresh_Protips_1": {
-        "message": "If the manual refresh setting is set to true, we will only pull data from the API when you open the popup."
+        "message": "如果手動重整設定為true，擴充功能只會在開啟 popup 時從 API 拉取資料。"
     }
 }

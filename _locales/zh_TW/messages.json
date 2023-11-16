@@ -1,6 +1,6 @@
 {
     "pluginName": {
-        "message": "Pom-Pom"
+        "message": "帕姆"
     },
     "pluginDesc": {
         "message": "Track Honkai: Star Rail stats in your browser."
@@ -30,37 +30,37 @@
         "message": ""
     },
     "popup_today": {
-        "message": "Today"
+        "message": "今日"
     },
     "popup_tomorrow": {
-        "message": "Tomorrow"
+        "message": "明日"
     },
     "popup_recovery_day": {
-        "message": "d"
+        "message": "天"
     },
     "popup_recovery_hour": {
-        "message": "h"
+        "message": "小時"
     },
     "popup_recovery_minute": {
-        "message": "m"
+        "message": "分鐘"
     },
     "popup_recovery_second": {
-        "message": "s"
+        "message": "秒"
     },
     "popup_CurrentTitle": {
-        "message": "Current: "
+        "message": "當前: "
     },
     "popup_ServerTitle": {
-        "message": "Server: "
+        "message": "伺服器: "
     },
     "popup_StaminaTitle": {
-        "message": "Current Trailblaze Power"
+        "message": "目前開拓力"
     },
     "popup_FullyReplenishedTitle": {
-        "message": "Fully Replenished"
+        "message": "全部恢復需要"
     },
     "popup_ETATitle": {
-        "message": "ETA"
+        "message": "預計回滿時間"
     },
     "popup_ExpeditionsTitle": {
         "message": "Assignments"

@@ -138,18 +138,18 @@ function getDS(oversea: boolean, params: Record<string, string>, body: object) {
   return `${timestamp},${randomStr},${sign}`
 }
 
-const MIYOUSHE_VERSION = '2.59.1'
+const MIYOUSHE_VERSION = '2.62.2'
 
 const HEADER_TEMPLATE_CN: Record<string, string> = {
   'x-rpc-app_version': MIYOUSHE_VERSION,
-  'User-Agent': `Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/${MIYOUSHE_VERSION}`,
+  'User-Agent': `Mozilla/5.0 (iPhone; CPU iPhone OS 17_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/${MIYOUSHE_VERSION}`,
   'x-rpc-client_type': '5',
-  'x-rpc-sys_version': '17.0',
-  'x-rpc-tool_version': 'v1.3.1-rpg',
+  'x-rpc-sys_version': '17.1',
+  'x-rpc-tool_version': 'v1.4.1-rpg',
   'x-rpc-device_name': 'iPhone',
   'Origin': 'https://webstatic.mihoyo.com',
   'X-Requested-With': 'com.mihoyo.hyperion',
-  'x-rpc-page': 'v1.3.1-rpg_#/rpg',
+  'x-rpc-page': 'v1.4.1-rpg_#/rpg',
   'Referer': 'https://webstatic.mihoyo.com/',
   'sec-fetch-dest': 'empty',
   'sec-fetch-site': 'same-site',
@@ -490,13 +490,14 @@ async function getGeetestChallenge(
   return _ret
 }
 
-export const generateDeviceFp = async (cookie: string, oldDeviceFp: string) => {
+export const generateDeviceFp = async (cookie: string, uid: string) => {
   const seed = generateSeed(16)
   const time = `${Date.now()}`
   const deviceId = await getDeviceId()
+  const oldDeviceFp = await readDataFromStorage(`deviceFp_${uid}`, '')
   const ext_fields = JSON.stringify({
     userAgent: HEADER_TEMPLATE_CN['User-Agent'],
-    browserScreenSize: 281520,
+    browserScreenSize: 246018,
     maxTouchPoints: 5,
     isTouchSupported: true,
     browserLanguage: 'zh-CN',
@@ -504,15 +505,20 @@ export const generateDeviceFp = async (cookie: string, oldDeviceFp: string) => {
     browserTimeZone: 'Asia/Shanghai',
     webGlRender: 'Apple GPU',
     webGlVendor: 'Apple Inc.',
-    numOfPlugins: 0,
-    listOfPlugins: 'unknown',
+    numOfPlugins: 5,
+    listOfPlugins: [
+      'PDF Viewer',
+      'Chrome PDF Viewer',
+      'Chromium PDF Viewer',
+      'Microsoft Edge PDF Viewer',
+      'WebKit built-in PDF',
+    ],
     screenRatio: 3,
     deviceMemory: 'unknown',
     hardwareConcurrency: '4',
     cpuClass: 'unknown',
     ifNotTrack: 'unknown',
     ifAdBlock: 0,
-    hasLiedLanguage: 0,
     hasLiedResolution: 1,
     hasLiedOs: 0,
     hasLiedBrowser: 0,
@@ -532,7 +538,12 @@ export const generateDeviceFp = async (cookie: string, oldDeviceFp: string) => {
   // 生成 header
   const headers = await getHeader(false, {}, body, false)
   // 为 header 追加 cookie
-  headers.Cookie = cookie
+  {
+    const seed = await readDataFromStorage(`deviceFp_seed_${uid}`, '')
+    const time = await readDataFromStorage(`deviceFp_time_${uid}`, '')
+
+    headers.Cookie = `DEVICEFP_SEED_ID=${seed};DEVICEFP_SEED_TIME=${time};DEVICEFP=${oldDeviceFp};${cookie};`
+  }
 
   // 发送请求
   const _ret = await advancedFetch(url, {
@@ -576,7 +587,7 @@ async function appendDeviceFp(
 
   // 如果 storage 中没有 deviceId，则生成一个新的 deviceId
   if (deviceFp === '' || deviceFpRefreshRequest) {
-    [seed, time, deviceFp] = await generateDeviceFp(cookie, deviceFp)
+    [seed, time, deviceFp] = await generateDeviceFp(cookie, uid)
     await writeDataToStorage(`deviceFp_${uid}`, deviceFp)
     await writeDataToStorage(`deviceFp_seed_${uid}`, seed)
     await writeDataToStorage(`deviceFp_time_${uid}`, time)

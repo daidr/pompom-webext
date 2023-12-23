@@ -47,7 +47,7 @@ export function generateSeed(length = 16) {
   return result
 }
 
-const latestDeviceMetaRandom = 'eSF0jTCYQLQBxsl'
+const latestDeviceMetaRandom = 'CMuZH62qyhKEAWR'
 const deviceIdNeedUpdate = async () => {
   const deviceId = await readDataFromStorage('deviceId', '')
   if (deviceId === '') {
@@ -138,11 +138,11 @@ function getDS(oversea: boolean, params: Record<string, string>, body: object) {
   return `${timestamp},${randomStr},${sign}`
 }
 
-const MIYOUSHE_VERSION = '2.62.2'
+const MIYOUSHE_VERSION = '2.50.1'
 
 const HEADER_TEMPLATE_CN: Record<string, string> = {
   'x-rpc-app_version': MIYOUSHE_VERSION,
-  'User-Agent': `Mozilla/5.0 (iPhone; CPU iPhone OS 17_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/${MIYOUSHE_VERSION}`,
+  'User-Agent': `Mozilla/5.0 (Linux; Android 12) Mobile miHoYoBBS/${MIYOUSHE_VERSION}`,
   'x-rpc-client_type': '5',
   'x-rpc-sys_version': '17.1',
   'x-rpc-tool_version': 'v1.4.1-rpg',
@@ -490,47 +490,63 @@ async function getGeetestChallenge(
   return _ret
 }
 
+export const randomStr = (length: number) => {
+  let str = ''
+  for (let i = 0; i < length; i++) {
+    str += Math.floor(Math.random() * 10)
+  }
+  return str
+}
+
 export const generateDeviceFp = async (cookie: string, uid: string) => {
-  const seed = generateSeed(16)
+  const seed = uuid()
   const time = `${Date.now()}`
   const deviceId = await getDeviceId()
   const oldDeviceFp = await readDataFromStorage(`deviceFp_${uid}`, '')
+  const model = randomStr(6)
   const ext_fields = JSON.stringify({
-    userAgent: HEADER_TEMPLATE_CN['User-Agent'],
-    browserScreenSize: 246018,
-    maxTouchPoints: 5,
-    isTouchSupported: true,
-    browserLanguage: 'zh-CN',
-    browserPlat: 'iPhone',
-    browserTimeZone: 'Asia/Shanghai',
-    webGlRender: 'Apple GPU',
-    webGlVendor: 'Apple Inc.',
-    numOfPlugins: 5,
-    listOfPlugins: [
-      'PDF Viewer',
-      'Chrome PDF Viewer',
-      'Chromium PDF Viewer',
-      'Microsoft Edge PDF Viewer',
-      'WebKit built-in PDF',
-    ],
-    screenRatio: 3,
-    deviceMemory: 'unknown',
-    hardwareConcurrency: '4',
-    cpuClass: 'unknown',
-    ifNotTrack: 'unknown',
-    ifAdBlock: 0,
-    hasLiedResolution: 1,
-    hasLiedOs: 0,
-    hasLiedBrowser: 0,
+    cpuType: 'arm64-v8a',
+    romCapacity: '512',
+    productName: model,
+    romRemain: '256',
+    manufacturer: 'Xiaomi',
+    appMemory: '512',
+    hostname: 'dg02-pool03-kvm87',
+    screenSize: '1080x1920',
+    osVersion: '13',
+    aaid: '',
+    vendor: '中国移动',
+    accelerometer: 'true',
+    buildTags: 'release-keys',
+    model,
+    brand: 'Xiaomi',
+    oaid: '',
+    hardware: 'qcom',
+    deviceType: 'OP5913L1',
+    devId: 'unknown',
+    serialNumber: 'unknown',
+    buildTime: '1588876800000',
+    buildUser: 'root',
+    ramCapacity: '2048',
+    magnetometer: 'true',
+    display: `OP5913L1-user ${model} 10 QKQ1.190825.002 V12.0.1.0.QFJCNXM release-keys`,
+    ramRemain: '1024',
+    deviceInfo: 'unknown',
+    gyroscope: 'true',
+    vaid: '',
+    buildType: 'user',
+    sdkVersion: '29',
+    board: 'sdm660',
   })
   const body = {
     seed_id: seed,
     device_id: deviceId.toUpperCase(),
-    platform: '5',
+    bbs_device_id: deviceId,
+    platform: '2',
     seed_time: time,
     ext_fields,
-    app_name: 'account_cn',
-    device_fp: oldDeviceFp || '38d7ee834d1e9',
+    app_name: 'bbs_cn',
+    device_fp: generateSeed(13),
   }
 
   const url = 'https://public-data-api.mihoyo.com/device-fp/api/getFp'
@@ -574,12 +590,10 @@ async function appendDeviceFp(
   uid: string,
   cookie: string,
 ) {
-  // const deviceFpRefreshRequest = await readDataFromStorage(
-  //   `deviceFp_${uid}_request`,
-  //   false,
-  // )
-
-  const deviceFpRefreshRequest = true
+  const deviceFpRefreshRequest = await readDataFromStorage(
+    `deviceFp_${uid}_request`,
+    false,
+  )
 
   let deviceFp = await readDataFromStorage(`deviceFp_${uid}`, '')
   let seed = await readDataFromStorage(`deviceFp_seed_${uid}`, '')
@@ -591,6 +605,7 @@ async function appendDeviceFp(
     await writeDataToStorage(`deviceFp_${uid}`, deviceFp)
     await writeDataToStorage(`deviceFp_seed_${uid}`, seed)
     await writeDataToStorage(`deviceFp_time_${uid}`, time)
+    await writeDataToStorage(`deviceFp_${uid}_request`, false)
   }
   headers['x-rpc-device_fp'] = deviceFp
   return `DEVICEFP_SEED_ID=${seed};DEVICEFP_SEED_TIME=${time};DEVICEFP=${deviceFp};${cookie};`

@@ -82,4 +82,3 @@ export const initResponseRules = async () => {
     addRules: rules,
   })
 }
-

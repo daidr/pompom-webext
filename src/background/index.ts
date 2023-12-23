@@ -438,7 +438,7 @@ async function _verifyVerification(uid: string, geetest: ICaptchaRequest) {
 
   const result = await verifyVerification(oversea, cookie, geetest, uid)
 
-  await generateDeviceFp(cookie)
+  await generateDeviceFp(cookie, uid)
 
   getRoleInfoByCookie(oversea, cookie)
   refreshData(false, false, true)

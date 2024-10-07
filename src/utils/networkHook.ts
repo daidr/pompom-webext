@@ -1,7 +1,7 @@
 import type { AdvancedHeaders } from './advancedFetch'
 import { range } from './utils'
 const targetPages = [
-  'https://api-os-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=hkrpg_global',
+  'https://api-os-takumi.mihoyo.com/binding/api/getUserGameRolesByLtoken?game_biz=hkrpg_global',
   'https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookieToken?game_biz=hkrpg_cn',
   'https://bbs-api-os.hoyolab.com/game_record/app/hkrpg/api/note*',
   'https://api-takumi-record.mihoyo.com/game_record/app/hkrpg/api/note*',

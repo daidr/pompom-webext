@@ -3,7 +3,7 @@
         "message": "Pom-Pom"
     },
     "pluginDesc": {
-        "message": "Track Honkai: Star Rail stats in your browser."
+        "message": "ブラウザで『崩壊：スターレイル』の統計を追跡する。"
     },
     "prod_gf_cn": {
         "message": "星穹列车(CN)"
@@ -30,31 +30,31 @@
         "message": ""
     },
     "popup_today": {
-        "message": "Today"
+        "message": "今日"
     },
     "popup_tomorrow": {
-        "message": "Tomorrow"
+        "message": "明日"
     },
     "popup_recovery_day": {
-        "message": "d"
+        "message": "日"
     },
     "popup_recovery_hour": {
-        "message": "h"
+        "message": "時間"
     },
     "popup_recovery_minute": {
-        "message": "m"
+        "message": "分"
     },
     "popup_recovery_second": {
-        "message": "s"
+        "message": "秒"
     },
     "popup_CurrentTitle": {
-        "message": "Current: "
+        "message": "現在: "
     },
     "popup_ServerTitle": {
-        "message": "Server: "
+        "message": "サーバー: "
     },
     "popup_StaminaTitle": {
-        "message": "Current Trailblaze Power"
+        "message": "現在の開拓力"
     },
     "popup_FullyReplenishedTitle": {
         "message": "Fully Replenished"

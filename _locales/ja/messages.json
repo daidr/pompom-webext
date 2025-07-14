@@ -3,7 +3,7 @@
         "message": "Pom-Pom"
     },
     "pluginDesc": {
-        "message": "Track Honkai: Star Rail stats in your browser."
+        "message": "ブラウザで『崩壊：スターレイル』の統計を追跡する。"
     },
     "prod_gf_cn": {
         "message": "星穹列车(CN)"
@@ -30,222 +30,222 @@
         "message": ""
     },
     "popup_today": {
-        "message": "Today"
+        "message": "今日"
     },
     "popup_tomorrow": {
-        "message": "Tomorrow"
+        "message": "明日"
     },
     "popup_recovery_day": {
-        "message": "d"
+        "message": "日"
     },
     "popup_recovery_hour": {
-        "message": "h"
+        "message": "時間"
     },
     "popup_recovery_minute": {
-        "message": "m"
+        "message": "分"
     },
     "popup_recovery_second": {
-        "message": "s"
+        "message": "秒"
     },
     "popup_CurrentTitle": {
-        "message": "Current: "
+        "message": "現在: "
     },
     "popup_ServerTitle": {
-        "message": "Server: "
+        "message": "サーバー: "
     },
     "popup_StaminaTitle": {
-        "message": "Current Trailblaze Power"
+        "message": "現在の開拓力"
     },
     "popup_FullyReplenishedTitle": {
-        "message": "Fully Replenished"
+        "message": "回復完了まで"
     },
     "popup_ETATitle": {
-        "message": "ETA"
+        "message": "完了予定日時"
     },
     "popup_ExpeditionsTitle": {
-        "message": "Assignments"
+        "message": "任務"
     },
     "popup_ExploringStatus": {
-        "message": "Exploring"
+        "message": "探索中"
     },
     "popup_FinishedStatus": {
-        "message": "Finished"
+        "message": "完了済み"
     },
     "popup_ReservedStaminaTitle": {
-        "message": "Reserved Power"
+        "message": "予備開拓力"
     },
     "popup_ReservedStaminaFull": {
-        "message": "(Full)"
+        "message": "(最大)"
     },
     "popup_DailyTrainingTitle": {
-        "message": "Daily Training"
+        "message": "デイリー訓練"
     },
     "popup_UniversePoints": {
-        "message": "Simulated Universe"
+        "message": "探索ポイント"
     },
     "popup_WeeklyBossesTitle": {
-        "message": "Echo of War"
+        "message": "歴戦余韻"
     },
     "popup_Available": {
-        "message": "Available"
+        "message": "使用例"
     },
     "popup_ConfigurationTitle": {
-        "message": "Configuration"
+        "message": "設定"
     },
     "popup_ConfigurationTips": {
-        "message": "You just need to complete a few simple configurations, and then you are ready to enjoy it!"
+        "message": "簡単な設定を行うだけで、すぐに楽しむことができます。"
     },
     "popup_ConfigurationButtonText": {
-        "message": "Open Options"
+        "message": "オプションを開く"
     },
     "popup_UpdateTimeTitle": {
-        "message": "Update: "
+        "message": "更新: "
     },
     "popup_ErrorTitle": {
-        "message": "Error"
+        "message": "エラー"
     },
     "popup_ErrorTips_1": {
-        "message": "We are unable to access your game data, try going to the options page to check if the configuration below is correct."
+        "message": "あなたのゲームデータにアクセスできません。オプションページで、以下の設定が正しいかどうか確認してみてください。"
     },
     "popup_ErrorTips_2": {
-        "message": "Is the network currently available?"
+        "message": "現在、ネットワークは利用可能ですか？"
     },
     "popup_ErrorTips_3": {
-        "message": "Are there any roles that are currently enabled?"
+        "message": "現在有効なアカウントはありますか?"
     },
     "popup_ErrorTips_4": {
-        "message": "If you are in China Mainland, you need a proxy to access the data of the overseas service"
+        "message": "中国本土にお住まいの場合は、海外サービスのデータにアクセスするためのプロキシが必要です"
     },
     "popup_ErrorTips_5": {
-        "message": "The current account triggers risk control and requires HMI verification"
+        "message": "現在のアカウントでリスク管理機能が作動したため、HMI認証が必要です。"
     },
     "popup_ErrorTips_6": {
-        "message": "Login to your account and re-import your roles"
+        "message": "アカウントにログインし、ロールを再インポートする"
     },
     "popup_ErrorTips_7": {
-        "message": "Click on the captcha button below"
+        "message": "下のCAPTCHAボタンをクリックしてください"
     },
     "popup_ErrorOpenConfigButtonText": {
-        "message": "Open Options"
+        "message": "オプションを開く"
     },
     "popup_ErrorRefreshButtonText": {
-        "message": "Refresh"
+        "message": "再読み込み"
     },
     "popup_CaptchaButtonText": {
-        "message": "Open Captcha Page"
+        "message": "Captcha ページを開く"
     },
     "options_Nav_AddNewRole": {
-        "message": "Add New Roles"
+        "message": "新しいアカウントを追加する"
     },
     "options_Nav_RoleListSetting": {
-        "message": "Role List"
+        "message": "アカウントリスト"
     },
     "options_Nav_Setting": {
-        "message": "Settings"
+        "message": "設定"
     },
     "options_Nav_About": {
-        "message": "About"
+        "message": "その他"
     },
     "options_SelectServer": {
-        "message": "I. Choose Region"
+        "message": "サーバー選択"
     },
     "options_ServerCN": {
-        "message": "China Mainland"
+        "message": "中国"
     },
     "options_ServerOS": {
-        "message": "Oversea"
+        "message": "中国以外"
     },
     "options_FetchUserCookie": {
-        "message": "II. Fetch Cookies"
+        "message": "II. クッキーを取得"
     },
     "options_Tips_1": {
-        "message": "We need your HoYoLAB user credentials (cookies) in order to access the relevant data."
+        "message": "関連するデータにアクセスするには、HoYoLABユーザー資格情報(クッキー) が必要です。"
     },
     "options_Tips_2": {
-        "message": "Don't worry, all these data are stored locally and will not be submitted to any third party service."
+        "message": "これらのデータはすべてローカルに保存され、第三者のサービスには送信されません。"
     },
     "options_Tips_3": {
-        "message": "Please make sure you are logged into <a href='https://www.miyoushe.com/ys' target='_blank'>HoYoLAB(China)</a> in this browser before clicking on the button below <br>After successfully obtaining cookies, the Extension will restore HoYoLAB to a non-logged-in state to prevent cookies from being invalidated due to manual logout"
+        "message": "下のボタンをクリックする前に、このブラウザで<a href='https://www.miyoushe.com/ys' target='_blank'>HoYoLAB(China)</a> にログインしていることを確認してください。<br>Cookieを正常に取得した後。 手動ログアウトによりクッキーが無効になるのを防ぐため、HoYoLABを非ログイン状態に復元します。"
     },
     "options_Tips_4": {
-        "message": "Please make sure you are logged into <a href='https://www.hoyolab.com/home' target='_blank'>HoYoLAB</a> in this browser before clicking on the button below <br>After successfully obtaining cookies, the Extension will restore HoYoLAB to a non-logged-in state to prevent cookies from being invalidated due to manual logout <br>(HoYoLAB blocked access from China Mainland, users from China Mainland need a proxy to get the data of overseas service)"
+        "message": "下のボタンをクリックする前に、このブラウザで <a href='https://www.hoyolab.com/home' target='_blank'>HoYoLAB</a> ログインしていることを確認してください <br>クッキーの取得に成功した後、手動ログアウトによるクッキーの無効化を防ぐために、この拡張機能はHoYoLABを非ログイン状態に戻します <br>(HoYoLAB は中国からのアクセスをブロックしており、中国のユーザーは海外サービスのデータ取得にプロキシが必要です)。"
     },
     "options_FetchBtnTitle": {
-        "message": "Fetch Cookies"
+        "message": "Cookieを取得"
     },
     "options_FetchBtnAlert_1": {
-        "message": "Failed to fetch roles"
+        "message": "アカウントの取得に失敗しました"
     },
     "options_FetchBtnAlert_2": {
-        "message": "Successfully added $1 role"
+        "message": "アカウントを1つ追加しました"
     },
     "options_FetchBtnAlert_3": {
-        "message": "No role binding"
+        "message": "アカウントが連携されていません"
     },
     "options_Role_NoRoleFound": {
-        "message": "No role found"
+        "message": "アカウントが見つかりません"
     },
     "options_Role_IsEnabledTitle": {
-        "message": "Enabled"
+        "message": "有効"
     },
     "options_Role_RoleNameTitle": {
-        "message": "Nickname(uid)"
+        "message": "ニックネーム(uid)"
     },
     "options_Role_RoleServerTitle": {
-        "message": "Server"
+        "message": "サーバー"
     },
     "options_Role_RoleActionTitle": {
-        "message": "Operation"
+        "message": "操作"
     },
     "options_About_VersionTitle": {
-        "message": "Version"
+        "message": "バージョン"
     },
     "options_About_AuthorTitle": {
-        "message": "Author"
+        "message": "作者"
     },
     "options_About_Author": {
         "message": "<a class='reverse' href='https://daidr.me' target='_blank'>daidr</a>"
     },
     "options_About_OpenSourceTitle": {
-        "message": "Open Source"
+        "message": "オープンソース"
     },
     "options_About_OpenSource": {
-        "message": "The extension is open source and hosted on <a class='reverse' href='https://github.com/daidr/pompom-webext' target='_blank'>Github</a>, obey the MIT license to use the source code please.\nYou can try to create <a class='reverse' href='https://github.com/daidr/pompom-webext/issues' target='_blank'>Issues</a> if you have any problems and I'll help you solve them as much as possible. It would be better if you could create PR👍"
+        "message": "この拡張機能はオープンソースで、<a class='reverse' href='https://github.com/daidr/pompom-webext' target='_blank'>Github</a>で公開されています。ソースコードを利用する際は、MITライセンスに従ってください。\n何か問題があれば、<a class='reverse' href='https://github.com/daidr/pompom-webext/issues' target='_blank'>Issues</a>を作成していただければ、できる限り解決のお手伝いをします。プルリクエストを作成していただけると、さらに助かります👍"
     },
     "options_About_ThankTitle": {
-        "message": "Credits"
+        "message": "クレジット"
     },
     "options_About_Thank": {
-        "message": "Special thanks to all contributors of this extension\nUI Reference: <a class='reverse' href='https://github.com/spencerwooo/PaimonMenuBar' target='_blank'>PaimonMenuBar</a>"
+        "message": "この拡張機能に貢献してくださったすべての皆様に感謝いたします。\n\nUIの参考元: <a class='reverse' href='https://github.com/spencerwooo/PaimonMenuBar' target='_blank'>PaimonMenuBar</a>"
     },
     "options_About_DonateTitle": {
-        "message": "Donate"
+        "message": "寄付する"
     },
     "options_Setting_Apply": {
-        "message": "Apply"
+        "message": "適用"
     },
     "options_Setting_Unsaved": {
-        "message": "Unsaved"
+        "message": "未保存"
     },
     "options_Setting_Item_Badge": {
-        "message": "Extension Badge"
+        "message": "拡張バッジ"
     },
     "options_Setting_Item_DataRefreshInterval": {
-        "message": "Refresh Interval"
+        "message": "更新間隔"
     },
     "options_Setting_Item_DataRefreshInterval_Unit": {
-        "message": "m"
+        "message": "分"
     },
     "options_Setting_Item_DataRefreshInterval_Protips_1": {
-        "message": "If the value is longer than 10 minutes, we'll attempt to impute some of the data locally."
+        "message": "値が10分を超える場合は、ローカルで一部のデータを削除しようとします。"
     },
     "options_Setting_Item_DataRefreshInterval_Protips_2": {
-        "message": "Range: 3 ~ 60 min"
+        "message": "範囲: 3 ~ 60 分"
     },
     "options_Setting_Item_ManualRefresh": {
-        "message": "Manual Refresh"
+        "message": "手動更新"
     },
     "options_Setting_Item_ManualRefresh_Protips_1": {
-        "message": "If the manual refresh setting is set to true, we will only pull data from the API when you open the popup."
+        "message": "手動更新の設定が「有効」の場合、ポップアップを開いたときにのみAPIからデータを取得します。"
     }
 }
